@@ -1,0 +1,42 @@
+import { createStore, createHook } from 'react-sweet-state';
+
+const Store = createStore({
+    initialState: {
+        shouldOpen: false,
+        shouldClose: false,
+        pickerConfig: null
+    },
+    actions: {
+        openPicker: pickerConfig => ({ setState, getState }) => {
+            const { shouldOpen } = getState();
+            !shouldOpen && setState({
+                shouldOpen: true,
+                shouldClose: false,
+                pickerConfig
+            });
+        },
+        pickerOpened: () => ({ setState }) => {
+            setState({
+                shouldOpen: false,
+                shouldClose: false
+            });
+        },
+        closePicker: () => ({ setState, getState }) => {
+            const { shouldClose } = getState();
+            !shouldClose && setState({
+                shouldOpen: false,
+                shouldClose: true
+            });
+        },
+        pickerClosed: () => ({ setState }) => {
+            setState({
+                shouldOpen: false,
+                shouldClose: false,
+                pickerConfig: null
+            });
+        }
+    },
+    name: 'picker'
+});
+
+export const usePicker = createHook(Store);
