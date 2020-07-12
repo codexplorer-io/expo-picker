@@ -43,15 +43,23 @@ const mapPickerConfig = ({
 };
 
 const openPickerIOS = ({ pickerConfig }) => {
-    QuickPicker.open(
-        mapPickerConfig(pickerConfig)
-    );
-    return true;
+    if (pickerConfig.pickerType === 'time') {
+        QuickPicker.open(
+            mapPickerConfig(pickerConfig)
+        );
+        return true;
+    }
+
+    return false;
 };
 
-const closePickerIOS = () => {
-    QuickPicker.close();
-    return true;
+const closePickerIOS = ({ pickerConfig }) => {
+    if (pickerConfig.pickerType === 'time') {
+        QuickPicker.close();
+        return true;
+    }
+
+    return false;
 };
 
 const openDateTimePickerAndroid = ({ pickerConfig }) => {
@@ -105,7 +113,7 @@ const openPickerAndroid = ({ pickerConfig }) => {
 
 const closePickerAndroid = ({ pickerConfig }) => {
     if (pickerConfig.pickerType === 'time') {
-        return closePickerIOS();
+        return closePickerIOS({ pickerConfig });
     }
 
     return false;

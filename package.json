@@ -10,6 +10,7 @@
     "react-sweet-state": "*",
     "react-native-paper": "*",
     "styled-components": "*",
+    "@react-navigation/native": "*",
     "@marko/react-hooks": "*"
   }
 }
