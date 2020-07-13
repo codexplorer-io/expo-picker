@@ -13,7 +13,8 @@ import {
     Divider,
     Checkbox,
     RadioButton,
-    List
+    useTheme,
+    Subheading
 } from 'react-native-paper';
 import { usePicker } from './store';
 
@@ -32,6 +33,20 @@ const KeyboardAvoiding = styled.KeyboardAvoidingView`
     flex: 1;
 `;
 
+const Item = styled.TouchableHighlight`
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    background-color: ${({ theme: { colors: { background } } }) => background};
+`;
+
+const ItemContent = styled.View`
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+    align-items: center;
+`;
+
 const optionsKeyExtractor = ({ key }) => `${key}`;
 
 const renderOptionItem = ({
@@ -40,7 +55,9 @@ const renderOptionItem = ({
     onValueChange,
     isMultiSelect,
     selectedValues,
-    onValuesChange
+    onValuesChange,
+    renderOptionContent,
+    theme
 }) => {
     const onSelect = () => {
         if (isMultiSelect) {
@@ -74,17 +91,37 @@ const renderOptionItem = ({
         );
     };
 
+    const renderLabel = () => (
+        <Subheading>
+            {item}
+        </Subheading>
+    );
+
     return (
-        <List.Item
-            title={item}
-            left={renderSelector}
+        <Item
+            underlayColor={theme.colors.backgroundHighlight}
             onPress={onSelect}
-        />
+        >
+            <>
+                {renderSelector()}
+                <ItemContent>
+                    {
+                        renderOptionContent ?
+                            renderOptionContent({
+                                option: item,
+                                renderLabel
+                            }) :
+                            renderLabel()
+                    }
+                </ItemContent>
+            </>
+        </Item>
     );
 };
 
 export const PickerScreen = () => {
     const isFocused = useIsFocused();
+    const theme = useTheme();
     const [
         { pickerConfig },
         { closePicker }
@@ -97,13 +134,10 @@ export const PickerScreen = () => {
         isMultiSelect,
         selectedValues,
         onValuesChange,
-        canFilter
+        canFilter,
+        renderOptionContent,
+        renderBottomView
     } = pickerConfig;
-
-    const [
-        internalSelectedValue,
-        setInternalSelectedValue
-    ] = useState(selectedValue);
     const [
         internalSelectedValues,
         setInternalSelectedValues
@@ -111,9 +145,12 @@ export const PickerScreen = () => {
     const [searchText, setSearchText] = useState('');
 
     const onConfirm = () => {
-        isMultiSelect ?
-            onValuesChange(internalSelectedValues) :
-            onValueChange(internalSelectedValue);
+        onValuesChange(internalSelectedValues);
+        closePicker();
+    };
+
+    const onSingleSelect = value => {
+        onValueChange(value);
         closePicker();
     };
 
@@ -127,11 +164,13 @@ export const PickerScreen = () => {
 
     const renderItem = ({ item }) => renderOptionItem({
         item: item.data,
-        selectedValue: internalSelectedValue,
-        onValueChange: setInternalSelectedValue,
+        selectedValue,
+        onValueChange: onSingleSelect,
         isMultiSelect,
         selectedValues: internalSelectedValues,
-        onValuesChange: setInternalSelectedValues
+        onValuesChange: setInternalSelectedValues,
+        renderOptionContent,
+        theme
     });
 
     const data = map(items, (item, index) => ({
@@ -165,10 +204,12 @@ export const PickerScreen = () => {
                     title={pickerConfig.title || ''}
                     titleStyle={{ textAlign: 'center', width: '100%' }}
                 />
-                <Appbar.Action
-                    icon='check'
-                    onPress={onConfirm}
-                />
+                {!!isMultiSelect && (
+                    <Appbar.Action
+                        icon='check'
+                        onPress={onConfirm}
+                    />
+                )}
             </Appbar.Header>
             <KeyboardAvoiding
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -187,6 +228,7 @@ export const PickerScreen = () => {
                         keyExtractor={optionsKeyExtractor}
                         data={data}
                     />
+                    {renderBottomView && renderBottomView()}
                 </SafeArea>
             </KeyboardAvoiding>
         </Root>

@@ -4,7 +4,6 @@ const Store = createStore({
     initialState: {
         shouldOpen: false,
         shouldClose: false,
-        isPickerScreenOpened: false,
         pickerConfig: null,
         navigation: null
     },
@@ -24,6 +23,15 @@ const Store = createStore({
             setState({
                 shouldOpen: false,
                 shouldClose: false
+            });
+        },
+        changeConfig: pickerConfig => ({ setState, getState }) => {
+            const { pickerConfig: currentConfig } = getState();
+            setState({
+                pickerConfig: {
+                    ...currentConfig,
+                    ...pickerConfig
+                }
             });
         },
         closePicker: () => ({ setState, getState }) => {
