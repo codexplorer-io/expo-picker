@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { BackHandler, Platform, FlatList } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-
 import styled from 'styled-components/native';
 import map from 'lodash/map';
+import difference from 'lodash/difference';
 import includes from 'lodash/includes';
 import without from 'lodash/without';
 import union from 'lodash/union';
@@ -33,7 +33,7 @@ const KeyboardAvoiding = styled.KeyboardAvoidingView`
     flex: 1;
 `;
 
-const Item = styled.TouchableHighlight`
+const ItemRoot = styled.TouchableHighlight`
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -45,6 +45,12 @@ const ItemContent = styled.View`
     flex-direction: row;
     margin-left: 10px;
     align-items: center;
+`;
+
+const ItemLabel = styled(Subheading)``;
+
+const SelectAllLabel = styled(ItemLabel)`
+    font-weight: bold;
 `;
 
 const optionsKeyExtractor = ({ key }) => `${key}`;
@@ -92,13 +98,13 @@ const renderOptionItem = ({
     };
 
     const renderLabel = () => (
-        <Subheading>
+        <ItemLabel>
             {item}
-        </Subheading>
+        </ItemLabel>
     );
 
     return (
-        <Item
+        <ItemRoot
             underlayColor={theme.colors.backgroundHighlight}
             onPress={onSelect}
         >
@@ -115,7 +121,41 @@ const renderOptionItem = ({
                     }
                 </ItemContent>
             </>
-        </Item>
+        </ItemRoot>
+    );
+};
+
+const SelectAll = ({
+    items,
+    values,
+    onValuesChange
+}) => {
+    const theme = useTheme();
+    const shouldSelectAllItems = difference(items, values).length === 0;
+    const onPress = () => {
+        onValuesChange(shouldSelectAllItems ? [] : items);
+    };
+
+    return (
+        <>
+            <ItemRoot
+                underlayColor={theme.colors.backgroundHighlight}
+                onPress={onPress}
+            >
+                <>
+                    <Checkbox
+                        status={shouldSelectAllItems ? 'checked' : 'unchecked'}
+                        onPress={onPress}
+                    />
+                    <ItemContent>
+                        <SelectAllLabel>
+                            Select All
+                        </SelectAllLabel>
+                    </ItemContent>
+                </>
+            </ItemRoot>
+            <Divider />
+        </>
     );
 };
 
@@ -128,6 +168,7 @@ export const PickerScreen = () => {
     ] = usePicker();
 
     const {
+        title,
         items,
         selectedValue,
         onValueChange,
@@ -136,7 +177,8 @@ export const PickerScreen = () => {
         onValuesChange,
         canFilter,
         renderOptionContent,
-        renderBottomView
+        renderBottomView,
+        renderEmptyView
     } = pickerConfig;
     const [
         internalSelectedValues,
@@ -193,6 +235,12 @@ export const PickerScreen = () => {
         isFocused
     ]);
 
+    const shouldShowSearch = !!canFilter && data.length > 0;
+    const shouldShowEmptyView = data.length === 0 && !!renderEmptyView;
+    const shouldShowList = !shouldShowEmptyView;
+    const shouldShowSelectAll = shouldShowList && isMultiSelect && data.length > 1;
+    const shouldShowBottomView = !!renderBottomView;
+
     return (
         <Root>
             <Appbar.Header>
@@ -201,7 +249,7 @@ export const PickerScreen = () => {
                     onPress={onCancel}
                 />
                 <Appbar.Content
-                    title={pickerConfig.title || ''}
+                    title={title || ''}
                     titleStyle={{ textAlign: 'center', width: '100%' }}
                 />
                 {!!isMultiSelect && (
@@ -215,20 +263,30 @@ export const PickerScreen = () => {
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
                 <SafeArea>
-                    {!!canFilter && (
+                    {shouldShowSearch && (
                         <Searchbar
                             placeholder='Type to search'
                             onChangeText={onSearchChange}
                             value={searchText}
                         />
                     )}
-                    <FlatList
-                        ItemSeparatorComponent={Divider}
-                        renderItem={renderItem}
-                        keyExtractor={optionsKeyExtractor}
-                        data={data}
-                    />
-                    {renderBottomView && renderBottomView()}
+                    {shouldShowEmptyView && renderEmptyView()}
+                    {shouldShowSelectAll && (
+                        <SelectAll
+                            items={items}
+                            values={internalSelectedValues}
+                            onValuesChange={setInternalSelectedValues}
+                        />
+                    )}
+                    {shouldShowList && (
+                        <FlatList
+                            ItemSeparatorComponent={Divider}
+                            renderItem={renderItem}
+                            keyExtractor={optionsKeyExtractor}
+                            data={data}
+                        />
+                    )}
+                    {shouldShowBottomView && renderBottomView()}
                 </SafeArea>
             </KeyboardAvoiding>
         </Root>
