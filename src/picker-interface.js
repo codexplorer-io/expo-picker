@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
 import get from 'lodash/get';
+import map from 'lodash/map';
+import find from 'lodash/find';
 import QuickPicker from 'quick-picker';
 import pickerStore, { ANIMATION_DURATION } from 'quick-picker/dist/PickerStore';
 
@@ -10,7 +12,7 @@ const mapPickerConfig = ({
     pickerType = 'normal',
     ...rest
 }) => {
-    const options = pickerType !== 'time' ? items.map(value => ({
+    const options = pickerType !== 'time' ? map(items, value => ({
         label: `${value}`,
         value
     })) : undefined;
@@ -18,7 +20,7 @@ const mapPickerConfig = ({
     return {
         items: options,
         item: pickerType !== 'time' ?
-            options.find(({ value }) => value === selectedValue) :
+            find(options, ({ value }) => value === selectedValue) :
             selectedValue,
         onChange: selectedOption => {
             onValueChange(
