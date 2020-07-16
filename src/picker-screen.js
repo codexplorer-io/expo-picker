@@ -35,12 +35,14 @@ const KeyboardAvoiding = styled.KeyboardAvoidingView`
 
 const ItemRoot = styled.TouchableHighlight`
     display: flex;
+    align-items: center;
     flex-direction: row;
     padding: 10px;
     background-color: ${({ theme: { colors: { background } } }) => background};
 `;
 
 const ItemContent = styled.View`
+    flex: 1;
     display: flex;
     flex-direction: row;
     margin-left: 10px;
