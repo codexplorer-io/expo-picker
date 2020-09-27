@@ -179,6 +179,7 @@ export const PickerScreen = () => {
         onValuesChange,
         canFilter,
         renderOptionContent,
+        renderTopView,
         renderBottomView,
         renderEmptyView
     } = pickerConfig;
@@ -241,6 +242,7 @@ export const PickerScreen = () => {
     const shouldShowEmptyView = data.length === 0 && !!renderEmptyView;
     const shouldShowList = !shouldShowEmptyView;
     const shouldShowSelectAll = shouldShowList && isMultiSelect && data.length > 1;
+    const shouldShowTopView = !!renderTopView;
     const shouldShowBottomView = !!renderBottomView;
 
     return (
@@ -265,6 +267,7 @@ export const PickerScreen = () => {
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
                 <SafeArea>
+                    {shouldShowTopView && renderTopView()}
                     {shouldShowSearch && (
                         <Searchbar
                             placeholder='Type to search'
