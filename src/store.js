@@ -1,6 +1,6 @@
 import { createStore, createHook } from 'react-sweet-state';
 
-const Store = createStore({
+export const Store = createStore({
     initialState: {
         shouldOpen: false,
         shouldClose: false,
@@ -19,12 +19,6 @@ const Store = createStore({
                 pickerConfig
             });
         },
-        pickerOpened: () => ({ setState }) => {
-            setState({
-                shouldOpen: false,
-                shouldClose: false
-            });
-        },
         changeConfig: pickerConfig => ({ setState, getState }) => {
             const { pickerConfig: currentConfig } = getState();
             setState({
@@ -39,12 +33,6 @@ const Store = createStore({
             !shouldClose && setState({
                 shouldOpen: false,
                 shouldClose: true
-            });
-        },
-        pickerClosed: () => ({ setState }) => {
-            setState({
-                shouldOpen: false,
-                shouldClose: false
             });
         }
     },

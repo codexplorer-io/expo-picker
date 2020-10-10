@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import QuickPicker from 'quick-picker';
+import React, { useEffect } from 'react';
 import { usePrevious } from '@marko/react-hooks';
-import { pickerInterface } from './picker-interface';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { usePicker } from './store';
 
 export const PICKER_SCREEN_ROUTE_NAME = 'PickerScreen';
@@ -14,56 +13,57 @@ export const Picker = () => {
             pickerConfig,
             navigation
         },
-        {
-            pickerOpened,
-            pickerClosed
-        }
+        { closePicker }
     ] = usePicker();
 
-    const [
-        shouldOpenPickerScreen,
-        setShouldOpenPickerScreen
-    ] = useState(false);
+    const isDatePicker = pickerConfig?.pickerType === 'time';
 
-    const previousShouldOpen = usePrevious(shouldOpen);
     const previousShouldClose = usePrevious(shouldClose);
-
+    const shouldClosePickerScreen = shouldClose &&
+        !previousShouldClose &&
+        !isDatePicker;
     useEffect(() => {
-        if (!previousShouldOpen && shouldOpen) {
-            const isOpened = pickerInterface.openPicker({ pickerConfig });
-            isOpened && pickerOpened();
-            setShouldOpenPickerScreen(!isOpened);
-        }
-
-        if (shouldClose && !previousShouldClose) {
-            const isClosed = pickerInterface.closePicker({ pickerConfig });
-
-            if (!isClosed) {
-                navigation.goBack();
-                setShouldOpenPickerScreen(false);
-            }
-
-            pickerClosed();
-        }
+        shouldClosePickerScreen && navigation.goBack();
     }, [
-        previousShouldOpen,
-        previousShouldClose,
-        shouldOpen,
-        shouldClose,
-        shouldOpenPickerScreen
-    ]);
-
-    const isVisible = !shouldClose && shouldOpenPickerScreen;
-    useEffect(() => {
-        if (!isVisible) {
-            return;
-        }
-
-        navigation.navigate(PICKER_SCREEN_ROUTE_NAME);
-    }, [
-        isVisible,
+        shouldClosePickerScreen,
         navigation
     ]);
 
-    return <QuickPicker />;
+    const previousShouldOpen = usePrevious(shouldOpen);
+    const shouldOpenPickerScreen = !shouldClose &&
+        shouldOpen &&
+        !previousShouldOpen &&
+        !isDatePicker;
+    useEffect(() => {
+        shouldOpenPickerScreen && navigation.navigate(PICKER_SCREEN_ROUTE_NAME);
+    }, [
+        shouldOpenPickerScreen,
+        navigation
+    ]);
+
+    if (!isDatePicker) {
+        return null;
+    }
+
+    const {
+        selectedValue,
+        onValueChange,
+        mode
+    } = pickerConfig;
+
+    const isDatePickerVisible = !shouldClose && shouldOpen;
+    return (
+        <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode={mode}
+            date={selectedValue}
+            onConfirm={selectedValue => {
+                closePicker();
+                selectedValue && onValueChange(selectedValue);
+            }}
+            onCancel={() => {
+                closePicker();
+            }}
+        />
+    );
 };

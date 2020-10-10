@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`routeConfig should be as expected 1`] = `
+Array [
+  Object {
+    "name": "MockPickerScreenRouteName",
+    "screen": "MockPickerScreen",
+    "screenOptions": Object {
+      "transitionPreset": "ModalSlideFromBottomIOS",
+    },
+  },
+]
+`;

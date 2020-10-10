@@ -5,12 +5,13 @@
   "peerDependencies": {
     "react": "*",
     "lodash": "*",
-    "quick-picker": "*",
     "react-native": "*",
     "react-sweet-state": "*",
     "react-native-paper": "*",
     "styled-components": "*",
     "@react-navigation/native": "*",
+    "@react-native-community/datetimepicker": "*",
+    "react-native-modal-datetime-picker": "*",
     "@marko/react-hooks": "*"
   }
 }
