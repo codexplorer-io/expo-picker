@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
 import { shallow } from 'enzyme';
-import noop from 'lodash/noop';
 import { usePrevious } from '@marko/react-hooks';
 import { usePicker } from './store';
 import { Picker } from './picker';
