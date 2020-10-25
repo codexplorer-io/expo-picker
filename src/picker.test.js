@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { shallow } from 'enzyme';
-import { usePrevious } from '@marko/react-hooks';
+import { usePrevious } from '@codexporer.io/react-hooks';
 import { usePicker } from './store';
 import { Picker } from './picker';
 
@@ -15,7 +15,7 @@ jest.mock('react-native-modal-datetime-picker', () => {
     return DateTimePickerModal;
 });
 
-jest.mock('@marko/react-hooks', () => ({
+jest.mock('@codexporer.io/react-hooks', () => ({
     usePrevious: jest.fn()
 }));
 

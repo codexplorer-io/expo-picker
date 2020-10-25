@@ -1,5 +1,5 @@
 {
-  "name": "@marko/expo-picker",
+  "name": "@codexporer.io/expo-picker",
   "version": "1.0.0",
   "main": "src/index.js",
   "peerDependencies": {
@@ -12,6 +12,6 @@
     "@react-navigation/native": "*",
     "@react-native-community/datetimepicker": "*",
     "react-native-modal-datetime-picker": "*",
-    "@marko/react-hooks": "*"
+    "@codexporer.io/react-hooks": "*"
   }
 }
