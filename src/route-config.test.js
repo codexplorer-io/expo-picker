@@ -1,4 +1,4 @@
-import { routeConfig } from './route-config';
+import { getRouteConfig } from './route-config';
 
 jest.mock('@react-navigation/stack', () => ({
     TransitionPresets: {
@@ -14,8 +14,8 @@ jest.mock('./picker-screen', () => ({
     PickerScreen: 'MockPickerScreen'
 }));
 
-describe('routeConfig', () => {
-    it('should be as expected', () => {
-        expect(routeConfig).toMatchSnapshot();
+describe('getRouteConfig', () => {
+    it('should return expected value', () => {
+        expect(getRouteConfig()).toMatchSnapshot();
     });
 });
