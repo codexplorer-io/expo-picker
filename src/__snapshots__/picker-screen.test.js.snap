@@ -9,12 +9,6 @@ exports[`PickerScreen Appbar.Header should render multi select as expected 1`] =
   />
   <withTheme(Appbar.Content)
     title=""
-    titleStyle={
-      Object {
-        "textAlign": "center",
-        "width": "100%",
-      }
-    }
   />
   <Appbar.Action
     icon="check"
@@ -33,12 +27,6 @@ exports[`PickerScreen Appbar.Header should render single select as expected 1`] 
   />
   <withTheme(Appbar.Content)
     title=""
-    titleStyle={
-      Object {
-        "textAlign": "center",
-        "width": "100%",
-      }
-    }
   />
 </withTheme(Appbar.Header)>
 `;

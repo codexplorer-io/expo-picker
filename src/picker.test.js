@@ -109,20 +109,6 @@ describe('Picker', () => {
     });
 
     describe('Open Picker Screen', () => {
-        /*
-            const previousShouldOpen = usePrevious(shouldOpen);
-            const shouldOpenPickerScreen = !shouldClose &&
-                shouldOpen &&
-                !previousShouldOpen &&
-                !isDatePicker;
-            useEffect(() => {
-                shouldOpenPickerScreen && navigation.navigate(PICKER_SCREEN_ROUTE_NAME);
-            }, [
-                shouldOpenPickerScreen,
-                navigation
-            ]);
-        */
-
         it('should open picker screen', () => {
             mockUsePicker({ shouldOpen: true, pickerConfig: {} });
 
@@ -159,36 +145,6 @@ describe('Picker', () => {
     });
 
     describe('Date Time Picker', () => {
-        /*
-            const isDatePicker = pickerConfig?.pickerType === 'time';
-
-            if (!isDatePicker) {
-                return null;
-            }
-
-            const {
-                selectedValue,
-                onValueChange,
-                mode
-            } = pickerConfig;
-
-            const isDatePickerVisible = !shouldClose && shouldOpen && isDatePicker;
-            return (
-                <DateTimePickerModal
-                    isVisible={isDatePickerVisible}
-                    mode={mode}
-                    date={selectedValue}
-                    onConfirm={selectedValue => {
-                        closePicker();
-                        selectedValue && onValueChange(selectedValue);
-                    }}
-                    onCancel={() => {
-                        closePicker();
-                    }}
-                />
-            );
-        */
-
         it('should return DateTimePickerModal', () => {
             mockUsePicker({
                 shouldOpen: true,

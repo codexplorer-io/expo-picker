@@ -65,7 +65,8 @@ const renderOptionItem = ({
     selectedValues,
     onValuesChange,
     renderOptionContent,
-    theme
+    theme,
+    hasSelector
 }) => {
     const onSelect = () => {
         if (isMultiSelect) {
@@ -111,7 +112,7 @@ const renderOptionItem = ({
             onPress={onSelect}
         >
             <>
-                {renderSelector()}
+                {hasSelector && renderSelector()}
                 <ItemContent>
                     {
                         renderOptionContent ?
@@ -181,7 +182,8 @@ export const PickerScreen = () => {
         renderOptionContent,
         renderTopView,
         renderBottomView,
-        renderEmptyView
+        renderEmptyView,
+        hasSelector = true
     } = pickerConfig;
     const [
         internalSelectedValues,
@@ -215,7 +217,8 @@ export const PickerScreen = () => {
         selectedValues: internalSelectedValues,
         onValuesChange: setInternalSelectedValues,
         renderOptionContent,
-        theme
+        theme,
+        hasSelector
     });
 
     const data = map(items, (item, index) => ({
@@ -254,7 +257,6 @@ export const PickerScreen = () => {
                 />
                 <Appbar.Content
                     title={title || ''}
-                    titleStyle={{ textAlign: 'center', width: '100%' }}
                 />
                 {!!isMultiSelect && (
                     <Appbar.Action

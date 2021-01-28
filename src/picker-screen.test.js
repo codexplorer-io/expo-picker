@@ -613,6 +613,24 @@ describe('PickerScreen', () => {
                     expect(onValueChange).toHaveBeenCalledWith('mock data');
                 });
 
+                it('should not render radio button', () => {
+                    mockUsePicker({
+                        pickerConfig: {
+                            ...defaultPickerConfig,
+                            items: ['1', '2'],
+                            hasSelector: false
+                        }
+                    });
+                    const renderItem = getRenderItem();
+
+                    const wrapper = shallow(
+                        renderItem({ item: { data: 'mock data', key: 'mock key' } })
+                    );
+
+                    // eslint-disable-next-line lodash/prefer-lodash-method
+                    expect(wrapper.find(RadioButton)).toHaveLength(0);
+                });
+
                 it('should properly render default item content', () => {
                     mockUsePicker({
                         pickerConfig: {
