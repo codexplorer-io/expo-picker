@@ -12,6 +12,7 @@
     "@react-navigation/native": "*",
     "@react-native-community/datetimepicker": "*",
     "react-native-modal-datetime-picker": "*",
-    "@codexporer.io/react-hooks": "*"
+    "@codexporer.io/react-hooks": "*",
+    "@codexporer.io/react-test-utils": "*"
   }
 }

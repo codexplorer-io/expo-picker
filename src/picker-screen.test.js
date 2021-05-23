@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import { BackHandler, View, FlatList } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import {
-    Provider as PaperProvider,
     Appbar,
     Searchbar,
     Divider,
@@ -25,10 +24,23 @@ jest.mock('react-native/Libraries/Utilities/BackHandler', () => ({
     addEventListener: jest.fn()
 }));
 
-jest.mock('react-native-paper', () => ({
-    ...jest.requireActual('react-native-paper'),
-    useTheme: () => ({ colors: { backgroundHighlight: 'mockBackgroundHighlight' } })
-}));
+jest.mock('react-native-paper', () => {
+    const { createMockComponent } = jest.requireActual('@codexporer.io/react-test-utils');
+    return {
+        Appbar: {
+            Header: createMockComponent('Appbar.Header', { hasChildren: true }),
+            Action: createMockComponent('Appbar.Action'),
+            Content: createMockComponent('Appbar.Content')
+        },
+        Searchbar: createMockComponent('Searchbar'),
+        Divider: createMockComponent('Divider'),
+        Checkbox: createMockComponent('Checkbox'),
+        RadioButton: createMockComponent('RadioButton'),
+        useTheme: () => ({ colors: { backgroundHighlight: 'mockBackgroundHighlight' } }),
+        Subheading: createMockComponent('Subheading'),
+        Text: createMockComponent('Text', { hasChildren: true })
+    };
+});
 
 jest.mock('@react-navigation/native', () => ({
     useIsFocused: jest.fn()
@@ -37,12 +49,6 @@ jest.mock('@react-navigation/native', () => ({
 jest.mock('./store', () => ({
     usePicker: jest.fn()
 }));
-
-const renderComponent = () => (
-    <PaperProvider>
-        <PickerScreen />
-    </PaperProvider>
-);
 
 const defaultPickerConfig = {
     title: undefined,
@@ -110,8 +116,7 @@ describe('PickerScreen', () => {
     describe('Appbar.Header', () => {
         it('should render single select as expected', () => {
             // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
+            const wrapper = shallow(<PickerScreen />)
                 .dive()
                 .find(Appbar.Header);
 
@@ -127,8 +132,7 @@ describe('PickerScreen', () => {
             });
 
             // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
+            const wrapper = shallow(<PickerScreen />)
                 .dive()
                 .find(Appbar.Header);
 
@@ -140,8 +144,7 @@ describe('PickerScreen', () => {
             mockUsePicker({ closePicker });
 
             // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
+            const wrapper = shallow(<PickerScreen />)
                 .dive()
                 .find(Appbar.Action);
 
@@ -165,8 +168,7 @@ describe('PickerScreen', () => {
             mockUseState({ internalSelectedValues: selectedValues });
 
             // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
+            const wrapper = shallow(<PickerScreen />)
                 .dive()
                 .find(Appbar.Action);
 
@@ -191,10 +193,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             expect(wrapper.find(TopView)).toHaveLength(1);
@@ -213,10 +212,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             const searchbar = wrapper.find(Searchbar);
@@ -237,10 +233,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             expect(wrapper.find(Searchbar)).toHaveLength(0);
@@ -255,10 +248,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             expect(wrapper.find(Searchbar)).toHaveLength(0);
@@ -275,8 +265,7 @@ describe('PickerScreen', () => {
                 }
             });
             // eslint-disable-next-line lodash/prefer-lodash-method
-            const onChangeText = shallow(renderComponent())
-                .find(PickerScreen)
+            const onChangeText = shallow(<PickerScreen />)
                 .dive()
                 .find(Searchbar)
                 .prop('onChangeText');
@@ -300,10 +289,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             expect(wrapper.find(EmptyView)).toHaveLength(1);
@@ -321,10 +307,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             expect(wrapper.find(EmptyView)).toHaveLength(0);
@@ -343,10 +326,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             const selectAll = wrapper.find('SelectAll');
@@ -368,10 +348,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             const selectAll = wrapper.find('SelectAll');
@@ -388,10 +365,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             const selectAll = wrapper.find('SelectAll');
@@ -408,10 +382,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             const selectAll = wrapper.find('SelectAll');
@@ -429,8 +400,7 @@ describe('PickerScreen', () => {
                 }
             });
             // eslint-disable-next-line lodash/prefer-lodash-method
-            const onValuesChange = shallow(renderComponent())
-                .find(PickerScreen)
+            const onValuesChange = shallow(<PickerScreen />)
                 .dive()
                 .find('SelectAll')
                 .prop('onValuesChange');
@@ -451,10 +421,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             const list = wrapper.find(FlatList);
@@ -486,8 +453,7 @@ describe('PickerScreen', () => {
                 }
             });
             // eslint-disable-next-line lodash/prefer-lodash-method
-            const extractKey = shallow(renderComponent())
-                .find(PickerScreen)
+            const extractKey = shallow(<PickerScreen />)
                 .dive()
                 .find(FlatList)
                 .prop('keyExtractor');
@@ -499,8 +465,7 @@ describe('PickerScreen', () => {
 
         describe('list item', () => {
             // eslint-disable-next-line lodash/prefer-lodash-method
-            const getRenderItem = () => shallow(renderComponent())
-                .find(PickerScreen)
+            const getRenderItem = () => shallow(<PickerScreen />)
                 .dive()
                 .find(FlatList)
                 .prop('renderItem');
@@ -922,10 +887,7 @@ describe('PickerScreen', () => {
                 }
             });
 
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            const wrapper = shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
             expect(wrapper.find(BottomView)).toHaveLength(1);
@@ -947,10 +909,7 @@ describe('PickerScreen', () => {
                     ...defaultPickerConfig
                 }
             });
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            shallow(<PickerScreen />).dive();
             expect(BackHandler.addEventListener).toHaveBeenCalledTimes(1);
             expect(closePicker).not.toHaveBeenCalled();
 
@@ -966,10 +925,7 @@ describe('PickerScreen', () => {
                     ...defaultPickerConfig
                 }
             });
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            shallow(<PickerScreen />).dive();
 
             expect(BackHandler.addEventListener).not.toHaveBeenCalled();
         });
@@ -984,10 +940,7 @@ describe('PickerScreen', () => {
                     ...defaultPickerConfig
                 }
             });
-            // eslint-disable-next-line lodash/prefer-lodash-method
-            shallow(renderComponent())
-                .find(PickerScreen)
-                .dive();
+            shallow(<PickerScreen />).dive();
             expect(removeBackHandler).not.toHaveBeenCalled();
 
             removeHandler();
