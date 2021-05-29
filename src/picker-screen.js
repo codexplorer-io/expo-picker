@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BackHandler, Platform, FlatList } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
@@ -201,9 +201,9 @@ export const PickerScreen = () => {
         closePicker();
     };
 
-    const onCancel = () => {
+    const onCancel = useCallback(() => {
         closePicker();
-    };
+    }, [closePicker]);
 
     const onSearchChange = text => {
         setSearchText(text);
