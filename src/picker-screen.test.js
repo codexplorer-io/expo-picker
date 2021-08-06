@@ -28,7 +28,7 @@ jest.mock('react-native-paper', () => {
     const { createMockComponent } = jest.requireActual('@codexporer.io/react-test-utils');
     return {
         Appbar: {
-            Header: createMockComponent('Appbar.Header', { hasChildren: true }),
+            Header: createMockComponent('Appbar.Header'),
             Action: createMockComponent('Appbar.Action'),
             Content: createMockComponent('Appbar.Content')
         },
@@ -38,7 +38,7 @@ jest.mock('react-native-paper', () => {
         RadioButton: createMockComponent('RadioButton'),
         useTheme: () => ({ colors: { backgroundHighlight: 'mockBackgroundHighlight' } }),
         Subheading: createMockComponent('Subheading'),
-        Text: createMockComponent('Text', { hasChildren: true })
+        Text: createMockComponent('Text')
     };
 });
 
