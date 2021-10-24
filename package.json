@@ -4,14 +4,18 @@
   "main": "src/index.js",
   "peerDependencies": {
     "react": "*",
+    "react-dom": "*",
+    "color": "*",
     "lodash": "*",
+    "react-magnetic-di": "*",
     "react-native": "*",
-    "react-sweet-state": "*",
+    "react-native-hsv-color-picker": "*",
+    "react-native-modal-datetime-picker": "*",
     "react-native-paper": "*",
+    "react-sweet-state": "*",
     "styled-components": "*",
     "@react-navigation/native": "*",
     "@react-native-community/datetimepicker": "*",
-    "react-native-modal-datetime-picker": "*",
     "@codexporer.io/react-hooks": "*",
     "@codexporer.io/react-test-utils": "*"
   }
