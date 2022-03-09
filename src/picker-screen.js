@@ -183,7 +183,9 @@ export const PickerScreen = () => {
         renderTopView,
         renderBottomView,
         renderEmptyView,
-        hasSelector = true
+        hasSelector = true,
+        shouldHideSelectAll,
+        shouldHideConfirmScreenButton
     } = pickerConfig;
     const [
         internalSelectedValues,
@@ -244,7 +246,10 @@ export const PickerScreen = () => {
     const shouldShowSearch = !!canFilter && data.length > 0;
     const shouldShowEmptyView = data.length === 0 && !!renderEmptyView;
     const shouldShowList = !shouldShowEmptyView;
-    const shouldShowSelectAll = shouldShowList && isMultiSelect && data.length > 1;
+    const shouldShowSelectAll = !shouldHideSelectAll &&
+        shouldShowList &&
+        isMultiSelect &&
+        data.length > 1;
     const shouldShowTopView = !!renderTopView;
     const shouldShowBottomView = !!renderBottomView;
 
@@ -258,7 +263,7 @@ export const PickerScreen = () => {
                 <Appbar.Content
                     title={title || ''}
                 />
-                {!!isMultiSelect && (
+                {!!isMultiSelect && !shouldHideConfirmScreenButton && (
                     <Appbar.Action
                         icon='check'
                         onPress={onConfirm}
