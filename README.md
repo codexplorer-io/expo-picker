@@ -168,4 +168,6 @@ renderTopView|Used to render view on the top of the picker screen with select op
 renderBottomView|Used to render view on the bottom of the picker screen with select options|
 renderEmptyView|Used to render render empty view, when there are no select options|
 hasSelector|If `false` select "radio", nor "checkbox" will be rendered. By default selector is rendered|
+shouldHideSelectAll|If `true`, "select all options" option for multi select options will be hidden|
+shouldHideConfirmScreenButton|If `true`, header confirm action for multi select options will be hidden|
 canFilter|NOT IMPLEMENTED|
