@@ -100,9 +100,9 @@ const renderOptionItem = ({
         );
     };
 
-    const renderLabel = () => (
+    const renderLabel = label => (
         <ItemLabel>
-            {item}
+            {label ?? item}
         </ItemLabel>
     );
 
