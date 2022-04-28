@@ -1,31 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PickerScreen Appbar.Header should render multi select as expected 1`] = `
-<Appbar.Header>
-  <Appbar.Action
+exports[`PickerScreen Appbar should render multi select as expected 1`] = `
+<Appbar>
+  <AppbarAction
     icon="close"
     onPress={[Function]}
   />
-  <Appbar.Content
+  <AppbarContent
     title=""
   />
-  <Appbar.Action
+  <AppbarAction
     icon="check"
     onPress={[Function]}
   />
-</Appbar.Header>
+</Appbar>
 `;
 
-exports[`PickerScreen Appbar.Header should render single select as expected 1`] = `
-<Appbar.Header>
-  <Appbar.Action
+exports[`PickerScreen Appbar should render single select as expected 1`] = `
+<Appbar>
+  <AppbarAction
     icon="close"
     onPress={[Function]}
   />
-  <Appbar.Content
+  <AppbarContent
     title=""
   />
-</Appbar.Header>
+</Appbar>
 `;
 
 exports[`PickerScreen List list item multi select should properly render custom item content 1`] = `

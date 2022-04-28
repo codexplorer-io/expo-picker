@@ -3,13 +3,16 @@ import { shallow } from 'enzyme';
 import { BackHandler, View, FlatList } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import {
-    Appbar,
     Searchbar,
     Divider,
     RadioButton,
     Checkbox,
     Text
 } from 'react-native-paper';
+import {
+    Appbar,
+    AppbarAction
+} from '@codexporer.io/expo-appbar';
 import noop from 'lodash/noop';
 import { usePicker } from './store';
 import { PickerScreen } from './picker-screen';
@@ -27,11 +30,6 @@ jest.mock('react-native/Libraries/Utilities/BackHandler', () => ({
 jest.mock('react-native-paper', () => {
     const { createMockComponent } = jest.requireActual('@codexporer.io/react-test-utils');
     return {
-        Appbar: {
-            Header: createMockComponent('Appbar.Header'),
-            Action: createMockComponent('Appbar.Action'),
-            Content: createMockComponent('Appbar.Content')
-        },
         Searchbar: createMockComponent('Searchbar'),
         Divider: createMockComponent('Divider'),
         Checkbox: createMockComponent('Checkbox'),
@@ -39,6 +37,15 @@ jest.mock('react-native-paper', () => {
         useTheme: () => ({ colors: { backgroundHighlight: 'mockBackgroundHighlight' } }),
         Subheading: createMockComponent('Subheading'),
         Text: createMockComponent('Text')
+    };
+});
+
+jest.mock('@codexporer.io/expo-appbar', () => {
+    const { createMockComponent } = jest.requireActual('@codexporer.io/react-test-utils');
+    return {
+        Appbar: createMockComponent('Appbar'),
+        AppbarAction: createMockComponent('AppbarAction'),
+        AppbarContent: createMockComponent('AppbarContent')
     };
 });
 
@@ -113,12 +120,12 @@ describe('PickerScreen', () => {
         jest.clearAllMocks();
     });
 
-    describe('Appbar.Header', () => {
+    describe('Appbar', () => {
         it('should render single select as expected', () => {
             // eslint-disable-next-line lodash/prefer-lodash-method
             const wrapper = shallow(<PickerScreen />)
                 .dive()
-                .find(Appbar.Header);
+                .find(Appbar);
 
             expect(wrapper).toMatchSnapshot();
         });
@@ -134,7 +141,7 @@ describe('PickerScreen', () => {
             // eslint-disable-next-line lodash/prefer-lodash-method
             const wrapper = shallow(<PickerScreen />)
                 .dive()
-                .find(Appbar.Header);
+                .find(Appbar);
 
             expect(wrapper).toMatchSnapshot();
         });
@@ -146,7 +153,7 @@ describe('PickerScreen', () => {
             // eslint-disable-next-line lodash/prefer-lodash-method
             const wrapper = shallow(<PickerScreen />)
                 .dive()
-                .find(Appbar.Action);
+                .find(AppbarAction);
 
             wrapper.first().prop('onPress')();
 
@@ -170,7 +177,7 @@ describe('PickerScreen', () => {
             // eslint-disable-next-line lodash/prefer-lodash-method
             const wrapper = shallow(<PickerScreen />)
                 .dive()
-                .find(Appbar.Action);
+                .find(AppbarAction);
 
             wrapper.at(1).prop('onPress')();
 

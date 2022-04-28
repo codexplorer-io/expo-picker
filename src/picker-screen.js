@@ -8,7 +8,6 @@ import includes from 'lodash/includes';
 import without from 'lodash/without';
 import union from 'lodash/union';
 import {
-    Appbar,
     Searchbar,
     Divider,
     Checkbox,
@@ -16,6 +15,11 @@ import {
     useTheme,
     Subheading
 } from 'react-native-paper';
+import {
+    Appbar,
+    AppbarAction,
+    AppbarContent
+} from '@codexporer.io/expo-appbar';
 import { usePicker } from './store';
 
 const Root = styled.View`
@@ -255,21 +259,21 @@ export const PickerScreen = () => {
 
     return (
         <Root>
-            <Appbar.Header>
-                <Appbar.Action
+            <Appbar>
+                <AppbarAction
                     icon='close'
                     onPress={onCancel}
                 />
-                <Appbar.Content
+                <AppbarContent
                     title={title || ''}
                 />
                 {!!isMultiSelect && !shouldHideConfirmScreenButton && (
-                    <Appbar.Action
+                    <AppbarAction
                         icon='check'
                         onPress={onConfirm}
                     />
                 )}
-            </Appbar.Header>
+            </Appbar>
             <KeyboardAvoiding
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >

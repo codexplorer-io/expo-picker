@@ -17,6 +17,7 @@
     "@react-navigation/native": "*",
     "@react-native-community/datetimepicker": "*",
     "@codexporer.io/react-hooks": "*",
-    "@codexporer.io/react-test-utils": "*"
+    "@codexporer.io/react-test-utils": "*",
+    "@codexporer.io/expo-appbar": "*"
   }
 }
