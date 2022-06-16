@@ -32,8 +32,8 @@ jest.mock('react-native-paper', () => {
     return {
         Searchbar: createMockComponent('Searchbar'),
         Divider: createMockComponent('Divider'),
-        Checkbox: createMockComponent('Checkbox'),
-        RadioButton: createMockComponent('RadioButton'),
+        Checkbox: { Android: createMockComponent('Checkbox') },
+        RadioButton: { Android: createMockComponent('RadioButton') },
         useTheme: () => ({ colors: { backgroundHighlight: 'mockBackgroundHighlight' } }),
         Subheading: createMockComponent('Subheading'),
         Text: createMockComponent('Text')
@@ -529,7 +529,7 @@ describe('PickerScreen', () => {
                     );
 
                     // eslint-disable-next-line lodash/prefer-lodash-method
-                    const radioButton = wrapper.find(RadioButton);
+                    const radioButton = wrapper.find(RadioButton.Android);
                     expect(radioButton).toEqual(wrapper.childAt(0));
                     expect(radioButton).toHaveLength(1);
                     expect(radioButton.props()).toStrictEqual(
@@ -553,7 +553,7 @@ describe('PickerScreen', () => {
                     // eslint-disable-next-line lodash/prefer-lodash-method
                     const radioButton = shallow(
                         renderItem({ item: { data: 'mock data', key: 'mock key' } })
-                    ).find(RadioButton);
+                    ).find(RadioButton.Android);
 
                     expect(radioButton).toHaveLength(1);
                     expect(radioButton.props()).toStrictEqual(
@@ -577,7 +577,7 @@ describe('PickerScreen', () => {
                     // eslint-disable-next-line lodash/prefer-lodash-method
                     const onPress = shallow(
                         renderItem({ item: { data: 'mock data', key: 'mock key' } })
-                    ).find(RadioButton).prop('onPress');
+                    ).find(RadioButton.Android).prop('onPress');
 
                     onPress();
 
@@ -600,7 +600,7 @@ describe('PickerScreen', () => {
                     );
 
                     // eslint-disable-next-line lodash/prefer-lodash-method
-                    expect(wrapper.find(RadioButton)).toHaveLength(0);
+                    expect(wrapper.find(RadioButton.Android)).toHaveLength(0);
                 });
 
                 it('should properly render default item content', () => {
@@ -738,7 +738,7 @@ describe('PickerScreen', () => {
                     );
 
                     // eslint-disable-next-line lodash/prefer-lodash-method
-                    const checkbox = wrapper.find(Checkbox);
+                    const checkbox = wrapper.find(Checkbox.Android);
                     expect(checkbox).toEqual(wrapper.childAt(0));
                     expect(checkbox).toHaveLength(1);
                     expect(checkbox.props()).toStrictEqual(
@@ -766,7 +766,7 @@ describe('PickerScreen', () => {
                     // eslint-disable-next-line lodash/prefer-lodash-method
                     const checkbox = shallow(
                         renderItem({ item: { data: 'mock data', key: 'mock key' } })
-                    ).find(Checkbox);
+                    ).find(Checkbox.Android);
 
                     expect(checkbox).toHaveLength(1);
                     expect(checkbox.props()).toStrictEqual(
@@ -794,7 +794,7 @@ describe('PickerScreen', () => {
                     // eslint-disable-next-line lodash/prefer-lodash-method
                     const onPress = shallow(
                         renderItem({ item: { data: 'mock data', key: 'mock key' } })
-                    ).find(Checkbox).prop('onPress');
+                    ).find(Checkbox.Android).prop('onPress');
 
                     onPress();
 
@@ -819,7 +819,7 @@ describe('PickerScreen', () => {
                     // eslint-disable-next-line lodash/prefer-lodash-method
                     const onPress = shallow(
                         renderItem({ item: { data: 'mock data', key: 'mock key' } })
-                    ).find(Checkbox).prop('onPress');
+                    ).find(Checkbox.Android).prop('onPress');
 
                     onPress();
 

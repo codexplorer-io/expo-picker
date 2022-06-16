@@ -89,7 +89,7 @@ const renderOptionItem = ({
     const renderSelector = () => {
         if (isMultiSelect) {
             return (
-                <Checkbox
+                <Checkbox.Android
                     status={includes(selectedValues, item) ? 'checked' : 'unchecked'}
                     onPress={onSelect}
                 />
@@ -97,7 +97,7 @@ const renderOptionItem = ({
         }
 
         return (
-            <RadioButton
+            <RadioButton.Android
                 status={item === selectedValue ? 'checked' : 'unchecked'}
                 onPress={onSelect}
             />
@@ -150,7 +150,7 @@ const SelectAll = ({
                 onPress={onPress}
             >
                 <>
-                    <Checkbox
+                    <Checkbox.Android
                         status={shouldSelectAllItems ? 'checked' : 'unchecked'}
                         onPress={onPress}
                     />
