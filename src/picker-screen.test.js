@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { shallow } from 'enzyme';
-import { BackHandler, View, FlatList } from 'react-native';
+import { BackHandler, View } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { useIsFocused } from '@react-navigation/native';
 import {
     Searchbar,
@@ -431,7 +432,7 @@ describe('PickerScreen', () => {
             const wrapper = shallow(<PickerScreen />).dive();
 
             // eslint-disable-next-line lodash/prefer-lodash-method
-            const list = wrapper.find(FlatList);
+            const list = wrapper.find(FlashList);
             expect(list).toHaveLength(1);
             expect(list.props()).toStrictEqual(
                 expect.objectContaining({
@@ -462,10 +463,10 @@ describe('PickerScreen', () => {
             // eslint-disable-next-line lodash/prefer-lodash-method
             const extractKey = shallow(<PickerScreen />)
                 .dive()
-                .find(FlatList)
+                .find(FlashList)
                 .prop('keyExtractor');
 
-            const key = extractKey({ key: 10 });
+            const key = extractKey(null, 10);
 
             expect(key).toBe('10');
         });
@@ -474,7 +475,7 @@ describe('PickerScreen', () => {
             // eslint-disable-next-line lodash/prefer-lodash-method
             const getRenderItem = () => shallow(<PickerScreen />)
                 .dive()
-                .find(FlatList)
+                .find(FlashList)
                 .prop('renderItem');
 
             describe('single select', () => {

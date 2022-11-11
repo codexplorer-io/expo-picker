@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { BackHandler, Platform, FlatList } from 'react-native';
+import { BackHandler, Platform } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import map from 'lodash/map';
@@ -59,7 +60,7 @@ const SelectAllLabel = styled(ItemLabel)`
     font-weight: bold;
 `;
 
-const optionsKeyExtractor = ({ key }) => `${key}`;
+const optionsKeyExtractor = (item, index) => `${index}`;
 
 const renderOptionItem = ({
     item,
@@ -70,8 +71,15 @@ const renderOptionItem = ({
     onValuesChange,
     renderOptionContent,
     theme,
-    hasSelector
+    hasSelector,
+    renderOption
 }) => {
+    if (renderOption) {
+        return renderOption({
+            option: item
+        });
+    }
+
     const onSelect = () => {
         if (isMultiSelect) {
             const isSelected = includes(selectedValues, item);
@@ -184,12 +192,14 @@ export const PickerScreen = () => {
         onValuesChange,
         canFilter,
         renderOptionContent,
+        renderOption,
         renderTopView,
         renderBottomView,
         renderEmptyView,
         hasSelector = true,
         shouldHideSelectAll,
-        shouldHideConfirmScreenButton
+        shouldHideConfirmScreenButton,
+        estimatedItemSize = 200
     } = pickerConfig;
     const [
         internalSelectedValues,
@@ -224,7 +234,8 @@ export const PickerScreen = () => {
         onValuesChange: setInternalSelectedValues,
         renderOptionContent,
         theme,
-        hasSelector
+        hasSelector,
+        renderOption
     });
 
     const data = map(items, (item, index) => ({
@@ -295,11 +306,12 @@ export const PickerScreen = () => {
                         />
                     )}
                     {shouldShowList && (
-                        <FlatList
+                        <FlashList
                             ItemSeparatorComponent={Divider}
                             renderItem={renderItem}
                             keyExtractor={optionsKeyExtractor}
                             data={data}
+                            estimatedItemSize={estimatedItemSize}
                         />
                     )}
                     {shouldShowBottomView && renderBottomView()}
