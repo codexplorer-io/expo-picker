@@ -5,7 +5,7 @@ import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import map from 'lodash/map';
 import difference from 'lodash/difference';
-import includes from 'lodash/includes';
+import find from 'lodash/find';
 import without from 'lodash/without';
 import union from 'lodash/union';
 import {
@@ -72,7 +72,8 @@ const renderOptionItem = ({
     renderOptionContent,
     theme,
     hasSelector,
-    renderOption
+    renderOption,
+    isEqual
 }) => {
     if (renderOption) {
         return renderOption({
@@ -82,7 +83,7 @@ const renderOptionItem = ({
 
     const onSelect = () => {
         if (isMultiSelect) {
-            const isSelected = includes(selectedValues, item);
+            const isSelected = !!find(selectedValues, value => isEqual(value, item));
             onValuesChange(
                 isSelected ?
                     without(selectedValues, item) :
@@ -98,7 +99,7 @@ const renderOptionItem = ({
         if (isMultiSelect) {
             return (
                 <Checkbox.Android
-                    status={includes(selectedValues, item) ? 'checked' : 'unchecked'}
+                    status={find(selectedValues, value => isEqual(value, item)) ? 'checked' : 'unchecked'}
                     onPress={onSelect}
                 />
             );
@@ -106,7 +107,7 @@ const renderOptionItem = ({
 
         return (
             <RadioButton.Android
-                status={item === selectedValue ? 'checked' : 'unchecked'}
+                status={isEqual(selectedValue, item) ? 'checked' : 'unchecked'}
                 onPress={onSelect}
             />
         );
@@ -199,7 +200,8 @@ export const PickerScreen = () => {
         hasSelector = true,
         shouldHideSelectAll,
         shouldHideConfirmScreenButton,
-        estimatedItemSize = 200
+        estimatedItemSize = 200,
+        isEqual = (item1, item2) => item1 === item2
     } = pickerConfig;
     const [
         internalSelectedValues,
@@ -235,7 +237,8 @@ export const PickerScreen = () => {
         renderOptionContent,
         theme,
         hasSelector,
-        renderOption
+        renderOption,
+        isEqual
     });
 
     const data = map(items, (item, index) => ({
