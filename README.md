@@ -10,9 +10,7 @@ iOS|Android|Web|
 
 ### Date time
 
-<img title="Date picker iOS" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/date-ios.png?raw=true" width="40%"> <img title="Date & time picker iOS" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/datetime-ios.png?raw=true" width="40%">
-
-<img title="Date picker Android" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/date-android.jpg?raw=true" width="40%"> <img title="Time picker Android" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/time-android.jpg?raw=true" width="40%">
+<img title="Date picker" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/date.png?raw=true" width="40%"> <img title="Time picker" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/time.png?raw=true" width="40%">
 
 ### Single & multi options with customizations
 
