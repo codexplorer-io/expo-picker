@@ -106,6 +106,13 @@ useEffect(() => {
 </NavigationContainer>
 ```
 
+To use date time picker, translations needs to be registered, preferably in your app index file:
+```
+import { en, registerTranslation } from 'react-native-paper-dates';
+
+registerTranslation('en', en);
+```
+
 ## Usage
 
 Picker is simple for use component. Everything needed is provided through `usePicker` hook:
