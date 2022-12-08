@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { di } from 'react-magnetic-di';
 import Color from 'color';
 import { usePrevious } from '@codexporer.io/react-hooks';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import HsvColorPicker from 'react-native-hsv-color-picker';
 import { Button, Portal, Dialog } from 'react-native-paper';
+import { DateTimePickerModal } from './date-time-picker-modal';
 import { usePicker } from './store';
 
 export const PICKER_SCREEN_ROUTE_NAME = 'PickerScreen';

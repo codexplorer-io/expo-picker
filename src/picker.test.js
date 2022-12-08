@@ -3,9 +3,9 @@ import { act } from 'react-dom/test-utils';
 import { injectable } from 'react-magnetic-di';
 import { usePrevious } from '@codexporer.io/react-hooks';
 import { createMockComponent, mountWithDi } from '@codexporer.io/react-test-utils';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import HsvColorPicker from 'react-native-hsv-color-picker';
 import { Button, Portal, Dialog } from 'react-native-paper';
+import { DateTimePickerModal } from './date-time-picker-modal';
 import { usePicker } from './store';
 import { Picker } from './picker';
 
