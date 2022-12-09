@@ -19,6 +19,10 @@ export const DateTimePickerModal = ({
     const [currentMode, setCurrentMode] = useState(null);
 
     useEffect(() => {
+        dateRef.current = new Date(date);
+    }, [date]);
+
+    useEffect(() => {
         if (!isVisible) {
             setCurrentMode(null);
             return;
