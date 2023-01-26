@@ -80,7 +80,9 @@ export const Picker = () => {
     const renderDatePicker = () => {
         const {
             onValueChange,
-            mode
+            mode,
+            startYear,
+            endYear
         } = pickerConfig;
 
         const isDatePickerVisible = !shouldClose && shouldOpen;
@@ -94,6 +96,8 @@ export const Picker = () => {
                 isVisible={isDatePickerVisible}
                 mode={mode}
                 date={selectedValue}
+                startYear={startYear ?? 1950}
+                endYear={endYear ?? 2050}
                 onConfirm={handleConfirm}
                 onCancel={closePicker}
             />

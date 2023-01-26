@@ -201,6 +201,8 @@ describe('Picker', () => {
                 isVisible: true,
                 mode: 'mockMode',
                 date: 'mockSelectedValue',
+                startYear: 1950,
+                endYear: 2050,
                 onCancel: expect.any(Function),
                 onConfirm: expect.any(Function)
             });

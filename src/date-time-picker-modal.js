@@ -12,6 +12,8 @@ export const DateTimePickerModal = ({
     isVisible,
     mode,
     date,
+    startYear,
+    endYear,
     onConfirm,
     onCancel
 }) => {
@@ -79,6 +81,8 @@ export const DateTimePickerModal = ({
             onDismiss={onCancel}
             onConfirm={handleConfirm}
             animationType='slide'
+            startYear={startYear}
+            endYear={endYear}
         />
     ) : currentMode === 'time' ? (
         <TimePickerModal

@@ -44,25 +44,28 @@ const theme = {
     ...
 };
 
-export const AppThemeWrapper = () => (
+export const AppThemeProvider = ({ children }) => (
     <ThemeProvider theme={theme}>
         <PaperProvider theme={theme}>
-            <App />
+            {children}
         </PaperProvider>
     </ThemeProvider>
 );
 ```
 
-Before picker can be displayed, it needs to be rendered within `App` as a descendant of theme providers:
+Before picker can be displayed, `Picker` component needs to be rendered within `App` as a descendant of theme provider and `SafeAreaProvider`:
 ```javascript
 import { Picker } from '@codexporer.io/expo-picker';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 ...
 
 export const App = () => (
-    <>
-        ...other components
-        <Picker />
-    </>
+    <SafeAreaProvider>
+        <AppThemeProvider>
+            ...other components
+            <Picker />
+        </AppThemeProvider>
+    </SafeAreaProvider>
 );
 ```
 
@@ -166,6 +169,8 @@ mode|Type of the date & time picker to be displayed: "date" - for date picker on
 title|Title displayed in picker screen for select options picker (default: empty string)|
 items|Array of strings to be displayed as options for select options picker|
 selectedValue|Selected value within the picker. Format depends of the picker type. For color picker it should be string in format `rgb(r, g, b)` or hash `#123456`; for date & time picker it should be `Date` object; for select options it should be string value from `items` parameter|
+startYear|The start year when the component is rendered, `number`. (default: `1950`)|
+endYear|The end year when the component is rendered, `number`. (default: `2050`)|
 onValueChange|Callback invoked when value is changed. Format depends of the picker type. For color picker it will be called with hash `#123456` string; for date & time picker it will be called with `Date` object; for select options it will be called with string value from `items` parameter|
 isMultiSelect|Defines if select options picker is multi select (default: false)|
 selectedValues|Array of strings, selected values. Used only in multi select options picker, where `selectedValue` will be ignorred. Array should contain string values from `items` parameter|
