@@ -93,13 +93,13 @@ describe('store', () => {
     });
 
     describe('closePicker', () => {
-        it('should close picker when shouldClose is false', () => {
+        it('should close picker when shouldClose is false', async () => {
             const { actions: { closePicker } } = Store;
             const getState = jest.fn(() => ({ shouldClose: false }));
             const setState = jest.fn();
             const thunk = closePicker();
 
-            thunk({ getState, setState });
+            await thunk({ getState, setState });
 
             expect(getState).toHaveBeenCalledTimes(1);
             expect(setState).toHaveBeenCalledTimes(1);

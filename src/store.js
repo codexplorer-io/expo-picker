@@ -28,12 +28,16 @@ export const Store = createStore({
                 }
             });
         },
-        closePicker: () => ({ setState, getState }) => {
-            const { shouldClose } = getState();
-            !shouldClose && setState({
-                shouldOpen: false,
-                shouldClose: true
-            });
+        closePicker: () => async ({ setState, getState }) => {
+            const { shouldClose, pickerConfig } = getState();
+            const { onBeforeClose } = pickerConfig ?? {};
+            if (!shouldClose) {
+                const canClose = await onBeforeClose?.() ?? true;
+                canClose && setState({
+                    shouldOpen: false,
+                    shouldClose: true
+                });
+            }
         }
     },
     name: 'picker'

@@ -201,7 +201,8 @@ export const PickerScreen = () => {
         shouldHideSelectAll,
         shouldHideConfirmScreenButton,
         estimatedItemSize = 200,
-        isEqual = (item1, item2) => item1 === item2
+        isEqual = (item1, item2) => item1 === item2,
+        onConfirm: onConfirmExternal
     } = pickerConfig;
     const [
         internalSelectedValues,
@@ -209,7 +210,16 @@ export const PickerScreen = () => {
     ] = useState(selectedValues);
     const [searchText, setSearchText] = useState('');
 
-    const onConfirm = () => {
+    const onConfirm = async () => {
+        if (onConfirmExternal) {
+            try {
+                await onConfirmExternal();
+                closePicker();
+            } catch {
+                //
+            }
+            return;
+        }
         onValuesChange(internalSelectedValues);
         closePicker();
     };
@@ -281,7 +291,7 @@ export const PickerScreen = () => {
                 <AppbarContent
                     title={title || ''}
                 />
-                {!!isMultiSelect && !shouldHideConfirmScreenButton && (
+                {((!!isMultiSelect && !shouldHideConfirmScreenButton) || onConfirmExternal) && (
                     <AppbarAction
                         icon='check'
                         onPress={onConfirm}
