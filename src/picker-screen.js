@@ -27,7 +27,7 @@ const Root = styled.View`
     display: flex;
     flex-direction: column;
     flex: 1;
-    background-color: ${({ theme: { colors: { background } } }) => background};
+    background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const SafeArea = styled.SafeAreaView`
@@ -43,7 +43,7 @@ const ItemRoot = styled.TouchableHighlight`
     align-items: center;
     flex-direction: row;
     padding: 10px;
-    background-color: ${({ theme: { colors: { background } } }) => background};
+    background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const ItemContent = styled.View`
@@ -298,10 +298,10 @@ export const PickerScreen = () => {
                     />
                 )}
             </Appbar>
-            <KeyboardAvoiding
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            >
-                <SafeArea>
+            <SafeArea>
+                <KeyboardAvoiding
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                >
                     {shouldShowTopView && renderTopView()}
                     {shouldShowSearch && (
                         <Searchbar
@@ -328,8 +328,8 @@ export const PickerScreen = () => {
                         />
                     )}
                     {shouldShowBottomView && renderBottomView()}
-                </SafeArea>
-            </KeyboardAvoiding>
+                </KeyboardAvoiding>
+            </SafeArea>
         </Root>
     );
 };
