@@ -5,7 +5,7 @@ import { usePrevious } from '@codexporer.io/react-hooks';
 import { createMockComponent, mountWithDi } from '@codexporer.io/react-test-utils';
 import HsvColorPicker from 'react-native-hsv-color-picker';
 import { Button, Portal, Dialog } from 'react-native-paper';
-import { DateTimePickerModal } from './date-time-picker-modal';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { usePicker } from './store';
 import { Picker } from './picker';
 

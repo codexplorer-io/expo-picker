@@ -107,13 +107,6 @@ useEffect(() => {
 </NavigationContainer>
 ```
 
-To use date time picker, translations needs to be registered, preferably in your app index file:
-```
-import { en, registerTranslation } from 'react-native-paper-dates';
-
-registerTranslation('en', en);
-```
-
 Note: For iOS only, when using Hermes engine, Intl polyfill is requeired, as per comment in https://github.com/expo/config-plugins/issues/73#issuecomment-1249965901
 
 ## Usage

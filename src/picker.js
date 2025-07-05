@@ -4,7 +4,8 @@ import Color from 'color';
 import { usePrevious } from '@codexporer.io/react-hooks';
 import HsvColorPicker from 'react-native-hsv-color-picker';
 import { Button, Portal, Dialog } from 'react-native-paper';
-import { DateTimePickerModal } from './date-time-picker-modal';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { OS } from '@codexporer.io/expo-device';
 import { usePicker } from './store';
 
 export const PICKER_SCREEN_ROUTE_NAME = 'PickerScreen';
@@ -85,6 +86,11 @@ export const Picker = () => {
             endYear
         } = pickerConfig;
 
+        const extraProps = {};
+        if (OS.isIOS()) {
+            extraProps.display = 'inline';
+        }
+
         const isDatePickerVisible = !shouldClose && shouldOpen;
         const handleConfirm = selectedValue => {
             closePicker();
@@ -100,6 +106,7 @@ export const Picker = () => {
                 endYear={endYear ?? 2050}
                 onConfirm={handleConfirm}
                 onCancel={closePicker}
+                {...extraProps}
             />
         );
     };
