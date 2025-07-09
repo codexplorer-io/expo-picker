@@ -61,7 +61,7 @@ export const Picker = () => {
         !isColorPicker;
 
     useEffect(() => {
-        shouldOpenPickerScreen && navigation.navigate(PICKER_SCREEN_ROUTE_NAME);
+        shouldOpenPickerScreen && navigation.push(PICKER_SCREEN_ROUTE_NAME);
     }, [
         shouldOpenPickerScreen,
         navigation
