@@ -19,6 +19,8 @@
     "@react-navigation/native": "*",
     "@codexporer.io/react-hooks": "*",
     "@codexporer.io/react-test-utils": "*",
-    "@codexporer.io/expo-appbar": "*"
+    "@codexporer.io/expo-appbar": "*",
+    "@codexporer.io/expo-keyboard-avoiding-view": "*",
+    "react-native-safe-area-context": "*"
   }
 }

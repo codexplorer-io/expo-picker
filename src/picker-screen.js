@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { BackHandler, Platform } from 'react-native';
+import { BackHandler } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { useIsFocused } from '@react-navigation/native';
 import styled from 'styled-components/native';
@@ -21,6 +21,8 @@ import {
     AppbarAction,
     AppbarContent
 } from '@codexporer.io/expo-appbar';
+import { KeyboardAvoidingView } from '@codexporer.io/expo-keyboard-avoiding-view';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { usePicker } from './store';
 
 const Root = styled.View`
@@ -30,12 +32,13 @@ const Root = styled.View`
     background-color: ${({ theme }) => theme.colors.background};
 `;
 
-const SafeArea = styled.SafeAreaView`
+const SafeArea = styled(SafeAreaView)`
     flex: 1;
 `;
 
-const KeyboardAvoiding = styled.KeyboardAvoidingView`
+const KeyboardAvoiding = styled(KeyboardAvoidingView)`
     flex: 1;
+    background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const ItemRoot = styled.TouchableHighlight`
@@ -298,10 +301,8 @@ export const PickerScreen = () => {
                     />
                 )}
             </Appbar>
-            <SafeArea>
-                <KeyboardAvoiding
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                >
+            <SafeArea edges={['right', 'bottom', 'left']}>
+                <KeyboardAvoiding isSticky>
                     {shouldShowTopView && renderTopView()}
                     {shouldShowSearch && (
                         <Searchbar
