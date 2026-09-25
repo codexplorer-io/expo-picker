@@ -1,178 +1,175 @@
-# expo-picker
-Customizable picker components for react-native & expo. Includes color, date time, single option and multi options pickers.
+# `@codexporer.io/expo-picker`
+
+Customizable picker suite for React Native and Expo applications. Includes color picker, date/time pickers, single-select options, and multi-select options with search filtering and custom content rendering.
 
 ## Platform Compatibility
-iOS|Android|Web|
--|-|-|
-✅|✅|❌|
+
+| iOS | Android | Web |
+| :---: | :---: | :---: |
+| ✅ | ✅ | ❌ |
 
 ## Samples
 
-### Date time
-
+### Date & Time
 <img title="Date picker" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/date.png?raw=true" width="40%"> <img title="Time picker" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/time.png?raw=true" width="40%">
 
-### Single & multi options with customizations
-
+### Single & Multi-Options with Search
 <img title="Single select 1" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/single-select-title.jpg?raw=true" width="40%"> <img title="Single select 2" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/single-select.jpg?raw=true" width="40%">
 
 <img title="Custom multi 1" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/custom-multiselect.jpg?raw=true" width="30%"> <img title="Custom multi 2" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/custom-multiselect2.jpg?raw=true" width="30%"> <img title="Custom multi 3" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/custom-multiselect3.jpg?raw=true" width="30%">
 
-### Color
+### Color Picker
+<img title="Color picker" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/color.jpg?raw=true" width="60%">
 
-<img title="Color picker" src="https://github.com/codexplorer-io/expo-picker/blob/master/samples/color.jpg?raw=true">
+## Installation & Peer Dependencies
 
-## Prerequisites
-Module requires a few module dependencies (look at `peerDependencies` within `package.json`) and some theme variable initalizations before it can be used and components redered properly.
-
-Required theme variables:
-
-- **colors.background** - Background color for the picker screen used to display select options
-- **colors.backgroundHighlight** - Background highlight color used to highlight select options
-
-```javascript
-import { ThemeProvider } from 'styled-components';
-import { Provider as PaperProvider } from 'react-native-paper';
-import { App } from './app';
-
-const theme = {
-    colors: {
-        background: backgroundColor,
-        backgroundHighlight: backgroundHighlightColor,
-        ...
-    },
-    ...
-};
-
-export const AppThemeProvider = ({ children }) => (
-    <ThemeProvider theme={theme}>
-        <PaperProvider theme={theme}>
-            {children}
-        </PaperProvider>
-    </ThemeProvider>
-);
+```bash
+yarn add @codexporer.io/expo-picker
 ```
 
-Before picker can be displayed, `Picker` component needs to be rendered within `App` as a descendant of theme provider and `SafeAreaProvider`:
-```javascript
-import { Picker } from '@codexporer.io/expo-picker';
+Ensure peer dependencies are installed:
+```bash
+yarn add react-sweet-state color react-native-modal-datetime-picker \
+  @codexporer.io/react-native-hsv-color-picker @codexporer.io/react-hooks \
+  @codexporer.io/expo-device @codexporer.io/expo-keyboard-avoiding-view \
+  @codexporer.io/expo-appbar @codexporer.io/expo-button @codexporer.io/expo-checkbox \
+  @codexporer.io/expo-dialog @codexporer.io/expo-radio-button @codexporer.io/expo-searchbar \
+  @codexporer.io/expo-app-theme
+```
+
+## Setup
+
+### 1. Mount `<Picker />` in Application Root
+
+`<Picker />` renders dialog-based pickers (such as the HSV color picker and date/time modal) and must be placed inside your `ThemeProvider`:
+
+```tsx
+import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-...
+import { ThemeProvider, defaultThemeConfig } from '@codexporer.io/expo-app-theme';
+import { Picker } from '@codexporer.io/expo-picker';
 
-export const App = () => (
-    <SafeAreaProvider>
-        <AppThemeProvider>
-            ...other components
-            <Picker />
-        </AppThemeProvider>
-    </SafeAreaProvider>
+export const App = ({ children }) => (
+  <SafeAreaProvider>
+    <ThemeProvider themeConfig={defaultThemeConfig}>
+      {children}
+      <Picker />
+    </ThemeProvider>
+  </SafeAreaProvider>
 );
 ```
 
-As a requirement to display picker screen, it needs to be integrated with react native navigation:
-```javascript
-import { getRouteConfig } from '@codexporer.io/expo-picker';
+### 2. Register Navigation Route for Select Screens
+
+For single-select and multi-select screens, register the picker screen in your React Navigation stack using `getRouteConfig()`:
+
+```tsx
+import React, { useRef, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-...
+import { createStackNavigator } from '@react-navigation/stack';
+import { getRouteConfig, usePicker } from '@codexporer.io/expo-picker';
 
-const Stack = createSharedElementStackNavigator();
-const { Navigator, Screen } = Stack;
-const routeConfig = getRouteConfig();
-...
+const Stack = createStackNavigator();
+const [pickerRoute] = getRouteConfig();
 
-const navigationRef = useRef();
-const [{ navigation }, { initNavigation }] = usePicker();
-const currentNavigationRef = navigationRef.current;
+export function RootNavigator() {
+  const navigationRef = useRef(null);
+  const [{ navigation }, { initNavigation }] = usePicker();
 
-useEffect(() => {
-    if (!navigation && currentNavigationRef) {
-        initNavigation(currentNavigationRef);
+  useEffect(() => {
+    if (!navigation && navigationRef.current) {
+      initNavigation(navigationRef.current);
     }
-}, [
-    navigation,
-    initNavigation,
-    currentNavigationRef
-]);
+  }, [navigation, initNavigation]);
 
-<NavigationContainer ref={navigationRef}>
-    <Navigator>
-        <Screen
-            name={routeConfig.name}
-            component={routeConfig.screen}
-            options={routeConfig.screenOptions}
-            ...rest props
+  return (
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator>
+        {/* Your application screens */}
+        <Stack.Screen
+          name={pickerRoute.name}
+          component={pickerRoute.screen}
+          options={pickerRoute.screenOptions}
         />
-        ...other screens
-    </Navigator>
-</NavigationContainer>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
 ```
-
-Note: For iOS only, when using Hermes engine, Intl polyfill is requeired, as per comment in https://github.com/expo/config-plugins/issues/73#issuecomment-1249965901
 
 ## Usage
 
-Picker is simple for use component. Everything needed is provided through `usePicker` hook:
-```javascript
+Use `usePicker()` to open and control pickers anywhere in your application:
+
+```tsx
+import React, { useState } from 'react';
+import { Button, View, Text } from 'react-native';
 import { usePicker } from '@codexporer.io/expo-picker';
-...
 
-export const MyComponent = () => {
-    const [, { openPicker, closePicker, changeConfig }] = usePicker();
+export const ExampleScreen = () => {
+  const [, { openPicker }] = usePicker();
+  const [selectedColor, setSelectedColor] = useState('#01579B');
+  const [selectedItem, setSelectedItem] = useState('Option 1');
 
-    const onShowPicker = () => {
-        openPicker(...pickerConfig);
-    };
-    
-    const onRerenderPicker = () => {
-        changeConfig(...pickerConfig);
-    };
-    
-    const onClosePicker = () => {
-        closePicker();
-    };
+  // Open Color Picker
+  const handleOpenColor = () => {
+    openPicker({
+      pickerType: 'color',
+      selectedValue: selectedColor,
+      onValueChange: (newColor) => setSelectedColor(newColor)
+    });
+  };
 
-    return ...;
+  // Open Single-Select Options Picker
+  const handleOpenSelect = () => {
+    openPicker({
+      title: 'Select Track Type',
+      items: ['Electronic', 'Ambient', 'Rock', 'Classical'],
+      selectedValue: selectedItem,
+      canFilter: true,
+      onValueChange: (val) => setSelectedItem(val)
+    });
+  };
+
+  return (
+    <View style={{ padding: 16, gap: 12 }}>
+      <Text>Selected Color: {selectedColor}</Text>
+      <Button title="Pick Color" onPress={handleOpenColor} />
+
+      <Text>Selected Genre: {selectedItem}</Text>
+      <Button title="Select Genre" onPress={handleOpenSelect} />
+    </View>
+  );
 };
 ```
 
 ## Exports
-symbol|description|
--|-|
-Picker|picker component|
-usePicker|hook used to control the picker|
 
-## usePicker
-Returns an array with `openPicker`, `closePicker` and `changeConfig` actions on the second index:
-```javascript
-const [, { openPicker, closePicker, changeConfig }] = usePicker();
+| Symbol | Description |
+| :--- | :--- |
+| `Picker` | Dialog-based picker component (color, date/time) |
+| `getRouteConfig` | Returns route configuration array for React Navigation stack registration |
+| `usePicker` | React hook to trigger, configure, and close pickers |
 
-...
-openPicker(...pickerConfig);
-...
-changeConfig(...pickerConfig);
-...
-closePicker();
-```
+## Picker Options Reference
 
-### Open picker / change config action parameters
-parameter|description|
--|-|
-pickerType|Type of the picker to be displayed: "time" - date & time picker, "color" - color picker, otherwise select options picker will be used (by default select options picker will be used)|
-mode|Type of the date & time picker to be displayed: "date" - for date picker only, "time" - for time picker only, "datetime" - for date & time picker (default: "date")|
-title|Title displayed in picker screen for select options picker (default: empty string)|
-items|Array of strings to be displayed as options for select options picker|
-selectedValue|Selected value within the picker. Format depends of the picker type. For color picker it should be string in format `rgb(r, g, b)` or hash `#123456`; for date & time picker it should be `Date` object; for select options it should be string value from `items` parameter|
-startYear|The start year when the component is rendered, `number`. (default: `1950`)|
-endYear|The end year when the component is rendered, `number`. (default: `2050`)|
-onValueChange|Callback invoked when value is changed. Format depends of the picker type. For color picker it will be called with hash `#123456` string; for date & time picker it will be called with `Date` object; for select options it will be called with string value from `items` parameter|
-isMultiSelect|Defines if select options picker is multi select (default: false)|
-selectedValues|Array of strings, selected values. Used only in multi select options picker, where `selectedValue` will be ignorred. Array should contain string values from `items` parameter|
-onValuesChange|Callback invoked with array of string selected `items` when values are changed. Used only in multi select options picker, where `onValueChange` will be ignorred|
-renderOptionContent|Used to render select option item content. If not passed, `item` will be displayed as a content|
-renderTopView|Used to render view on the top of the picker screen with select options|
-renderBottomView|Used to render view on the bottom of the picker screen with select options|
-renderEmptyView|Used to render render empty view, when there are no select options|
-hasSelector|If `false` select "radio", nor "checkbox" will be rendered. By default selector is rendered|
-shouldHideSelectAll|If `true`, "select all options" option for multi select options will be hidden|
-shouldHideConfirmScreenButton|If `true`, header confirm action for multi select options will be hidden|
-canFilter|NOT IMPLEMENTED|
+| Parameter | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `pickerType` | `'color' \| 'date' \| 'time' \| 'datetime' \| 'select'` | `'select'` | Type of picker to display |
+| `mode` | `'date' \| 'time' \| 'datetime'` | `'date'` | Date picker mode |
+| `title` | `string` | `''` | Header title in select option screen |
+| `items` | `string[]` | `[]` | Available choices for select picker |
+| `selectedValue` | `any` | — | Current selected value |
+| `onValueChange` | `(val: any) => void` | — | Callback invoked on single selection change |
+| `isMultiSelect` | `boolean` | `false` | Enables multi-selection mode with checkboxes |
+| `selectedValues` | `string[]` | `[]` | Selected items array for multi-select |
+| `onValuesChange` | `(vals: string[]) => void` | — | Callback invoked on multi-selection change |
+| `canFilter` | `boolean` | `false` | Enables real-time search filtering in options screen |
+| `renderOptionContent` | `(item: string) => ReactNode`| — | Custom item renderer |
+| `renderTopView` | `() => ReactNode` | — | Custom header element above option list |
+| `renderBottomView` | `() => ReactNode` | — | Custom footer element below option list |
+| `hasSelector` | `boolean` | `true` | Shows radio or checkbox selector icon |
+
+## License
+
+MIT
