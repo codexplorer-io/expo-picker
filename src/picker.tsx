@@ -4,6 +4,7 @@ import { usePrevious } from '@codexporer.io/react-hooks';
 import HsvColorPicker from '@codexporer.io/react-native-hsv-color-picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { OS } from '@codexporer.io/expo-device';
+import { getNavigation } from '@codexporer.io/expo-navigation-bridge';
 import { usePicker } from './store';
 import { Dialog, DialogContent, DialogActions } from '@codexporer.io/expo-dialog';
 import { Button, ButtonVariant, ButtonSize } from '@codexporer.io/expo-button';
@@ -21,8 +22,7 @@ export const Picker: React.FC = () => {
         {
             shouldOpen,
             shouldClose,
-            pickerConfig,
-            navigation
+            pickerConfig
         },
         { closePicker }
     ] = usePicker();
@@ -44,10 +44,10 @@ export const Picker: React.FC = () => {
     );
 
     useEffect(() => {
-        if (shouldClosePickerScreen && navigation) {
-            navigation.goBack?.();
+        if (shouldClosePickerScreen) {
+            getNavigation()?.goBack();
         }
-    }, [shouldClosePickerScreen, navigation]);
+    }, [shouldClosePickerScreen]);
 
     const previousShouldOpen = usePrevious(shouldOpen);
     const shouldOpenPickerScreen = Boolean(
@@ -59,10 +59,10 @@ export const Picker: React.FC = () => {
     );
 
     useEffect(() => {
-        if (shouldOpenPickerScreen && navigation) {
-            navigation.push?.(PICKER_SCREEN_ROUTE_NAME);
+        if (shouldOpenPickerScreen) {
+            getNavigation()?.push(PICKER_SCREEN_ROUTE_NAME);
         }
-    }, [shouldOpenPickerScreen, navigation]);
+    }, [shouldOpenPickerScreen]);
 
     useEffect(() => {
         if (!isColorPicker || !selectedValue) {

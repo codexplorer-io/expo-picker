@@ -1,4 +1,4 @@
-import { TransitionPresets } from '@react-navigation/stack';
+import { getScreenTransitions } from '@codexporer.io/expo-navigation-bridge';
 import { PICKER_SCREEN_ROUTE_NAME } from './picker';
 import { PickerScreen } from './picker-screen';
 
@@ -12,6 +12,6 @@ export const getRouteConfig = (): PickerRouteConfig[] => [{
     name: PICKER_SCREEN_ROUTE_NAME,
     screen: PickerScreen,
     screenOptions: {
-        ...TransitionPresets.ModalSlideFromBottomIOS
+        ...(getScreenTransitions()?.slideFromBottom ?? {})
     }
 }];

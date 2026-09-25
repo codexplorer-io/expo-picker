@@ -34,7 +34,7 @@ yarn add react-sweet-state color react-native-modal-datetime-picker \
   @codexporer.io/expo-device @codexporer.io/expo-keyboard-avoiding-view \
   @codexporer.io/expo-appbar @codexporer.io/expo-button @codexporer.io/expo-checkbox \
   @codexporer.io/expo-dialog @codexporer.io/expo-radio-button @codexporer.io/expo-searchbar \
-  @codexporer.io/expo-app-theme
+  @codexporer.io/expo-navigation-bridge @codexporer.io/expo-app-theme
 ```
 
 ## Setup
@@ -65,22 +65,28 @@ For single-select and multi-select screens, register the picker screen in your R
 
 ```tsx
 import React, { useRef, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { getRouteConfig, usePicker } from '@codexporer.io/expo-picker';
+import { NavigationContainer, useIsFocused } from '@react-navigation/native';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { setNavigation, setScreenTransitions, setUseIsFocused } from '@codexporer.io/expo-navigation-bridge';
+import { getRouteConfig } from '@codexporer.io/expo-picker';
+
+// Configure screen transitions and hooks for the picker
+setScreenTransitions({
+  slideFromBottom: TransitionPresets.ModalSlideFromBottomIOS,
+});
+setUseIsFocused(useIsFocused);
 
 const Stack = createStackNavigator();
 const [pickerRoute] = getRouteConfig();
 
 export function RootNavigator() {
   const navigationRef = useRef(null);
-  const [{ navigation }, { initNavigation }] = usePicker();
 
   useEffect(() => {
-    if (!navigation && navigationRef.current) {
-      initNavigation(navigationRef.current);
+    if (navigationRef.current) {
+      setNavigation(navigationRef.current);
     }
-  }, [navigation, initNavigation]);
+  }, []);
 
   return (
     <NavigationContainer ref={navigationRef}>

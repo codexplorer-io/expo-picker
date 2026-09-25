@@ -9,7 +9,7 @@ import {
     ViewStyle
 } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@codexporer.io/expo-navigation-bridge';
 import map from 'lodash/map';
 import difference from 'lodash/difference';
 import find from 'lodash/find';

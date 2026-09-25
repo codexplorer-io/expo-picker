@@ -37,22 +37,17 @@ export interface PickerState {
     shouldOpen: boolean;
     shouldClose: boolean;
     pickerConfig: PickerConfig | null;
-    navigation: any;
 }
 
 const initialState: PickerState = {
     shouldOpen: false,
     shouldClose: false,
-    pickerConfig: null,
-    navigation: null
+    pickerConfig: null
 };
 
 export const Store = createStore({
     initialState,
     actions: {
-        initNavigation: (navigation: any) => ({ setState }: { setState: (state: Partial<PickerState>) => void }) => {
-            setState({ navigation });
-        },
         openPicker: (pickerConfig: PickerConfig) => ({ setState, getState }: { setState: (state: Partial<PickerState>) => void; getState: () => PickerState }) => {
             const { shouldOpen } = getState();
             if (!shouldOpen) {
