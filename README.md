@@ -153,28 +153,51 @@ export const ExampleScreen = () => {
 
 | Symbol | Description |
 | :--- | :--- |
-| `Picker` | Dialog-based picker component (color, date/time) |
+| `Picker` | Dialog-based picker component (color, date/time) mounted in root app hierarchy |
 | `getRouteConfig` | Returns route configuration array for React Navigation stack registration |
-| `usePicker` | React hook to trigger, configure, and close pickers |
+| `usePicker` | React hook returning `[state, actions]` to trigger, configure, and close pickers |
 
-## Picker Options Reference
+### `usePicker()` Hook
+
+Returns `[state, actions]`:
+
+#### State (`PickerState`)
+- `shouldOpen: boolean` — Whether a picker modal or screen should be opened.
+- `shouldClose: boolean` — Whether the active picker should be closed.
+- `pickerConfig: PickerConfig | null` — Currently active picker configuration.
+
+#### Actions
+- `openPicker(config: PickerConfig): void` — Opens the picker with the specified configuration.
+- `changeConfig(config: Partial<PickerConfig>): void` — Partially updates the active picker configuration while opened.
+- `closePicker(): Promise<void>` — Closes the picker after awaiting `onBeforeClose()` if configured.
+
+## Picker Options Reference (`PickerConfig<T>`)
 
 | Parameter | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `pickerType` | `'color' \| 'date' \| 'time' \| 'datetime' \| 'select'` | `'select'` | Type of picker to display |
+| `pickerType` | `'list' \| 'date' \| 'time' \| 'datetime' \| 'color'` | `'list'` | Type of picker modality to display |
 | `mode` | `'date' \| 'time' \| 'datetime'` | `'date'` | Date picker mode |
 | `title` | `string` | `''` | Header title in select option screen |
-| `items` | `string[]` | `[]` | Available choices for select picker |
-| `selectedValue` | `any` | — | Current selected value |
-| `onValueChange` | `(val: any) => void` | — | Callback invoked on single selection change |
-| `isMultiSelect` | `boolean` | `false` | Enables multi-selection mode with checkboxes |
-| `selectedValues` | `string[]` | `[]` | Selected items array for multi-select |
-| `onValuesChange` | `(vals: string[]) => void` | — | Callback invoked on multi-selection change |
+| `items` | `T[]` | `[]` | Available choices for list picker |
+| `selectedValue` | `T` | — | Current selected value (single-select) |
+| `onValueChange` | `(val: T) => void` | — | Callback invoked on single selection change |
+| `selectedValues` | `T[]` | `[]` | Selected items array for multi-select |
+| `onValuesChange` | `(vals: T[]) => void` | — | Callback invoked on multi-selection change |
+| `hasSelector` | `boolean` | `true` | Shows radio or checkbox selector icon (enables multi-select when `selectedValues` is provided) |
+| `shouldHideSelectAll` | `boolean` | `false` | Hides the Select All toggle button in multi-select |
+| `shouldHideConfirmScreenButton` | `boolean` | `false` | Hides the screen-level confirm button in multi-select |
 | `canFilter` | `boolean` | `false` | Enables real-time search filtering in options screen |
-| `renderOptionContent` | `(item: string) => ReactNode`| — | Custom item renderer |
+| `renderOptionContent` | `(props: { option: T; renderLabel }) => ReactNode` | — | Custom item content renderer |
+| `renderOption` | `(props: { option: T }) => ReactNode` | — | Custom full option row renderer |
 | `renderTopView` | `() => ReactNode` | — | Custom header element above option list |
 | `renderBottomView` | `() => ReactNode` | — | Custom footer element below option list |
-| `hasSelector` | `boolean` | `true` | Shows radio or checkbox selector icon |
+| `renderEmptyView` | `() => ReactNode` | — | Custom view rendered when no items match search filter |
+| `estimatedItemSize` | `number` | `50` | Estimated item height for FlashList virtualization |
+| `startYear` | `number` | — | Minimum year limit for date picker |
+| `endYear` | `number` | — | Maximum year limit for date picker |
+| `isEqual` | `(item1: T, item2: T) => boolean` | — | Custom equality comparator for list items |
+| `onBeforeClose` | `() => Promise<boolean> \| boolean` | — | Interceptor callback to guard closing; returning `false` cancels close |
+| `onConfirm` | `() => Promise<void> \| void` | — | Callback invoked when confirming selection |
 
 ## License
 
