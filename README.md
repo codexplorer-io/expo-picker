@@ -29,12 +29,14 @@ yarn add @codexporer.io/expo-picker
 
 Ensure peer dependencies are installed:
 ```bash
-yarn add react-sweet-state color react-native-modal-datetime-picker \
-  @codexporer.io/react-native-hsv-color-picker @codexporer.io/react-hooks \
-  @codexporer.io/expo-device @codexporer.io/expo-keyboard-avoiding-view \
-  @codexporer.io/expo-appbar @codexporer.io/expo-button @codexporer.io/expo-checkbox \
-  @codexporer.io/expo-dialog @codexporer.io/expo-radio-button @codexporer.io/expo-searchbar \
-  @codexporer.io/expo-navigation-bridge @codexporer.io/expo-app-theme
+yarn add react react-native react-sweet-state color lodash \
+  @shopify/flash-list react-native-modal-datetime-picker @react-native-community/datetimepicker \
+  react-native-safe-area-context @codexporer.io/expo-app-theme @codexporer.io/expo-appbar \
+  @codexporer.io/expo-button @codexporer.io/expo-checkbox @codexporer.io/expo-device \
+  @codexporer.io/expo-dialog @codexporer.io/expo-keyboard-avoiding-view \
+  @codexporer.io/expo-navigation-bridge @codexporer.io/expo-radio-button \
+  @codexporer.io/expo-searchbar @codexporer.io/react-hooks \
+  @codexporer.io/react-native-hsv-color-picker
 ```
 
 ## Setup
@@ -187,15 +189,16 @@ Returns `[state, actions]`:
 | `shouldHideSelectAll` | `boolean` | `false` | Hides the Select All toggle button in multi-select |
 | `shouldHideConfirmScreenButton` | `boolean` | `false` | Hides the screen-level confirm button in multi-select |
 | `canFilter` | `boolean` | `false` | Enables real-time search filtering in options screen |
+| `filterOption` | `(item: T, searchText: string) => boolean` | — | Custom predicate for filtering items (defaults to matching `item.label ?? item.title ?? item.name ?? String(item)` case-insensitively) |
 | `renderOptionContent` | `(props: { option: T; renderLabel }) => ReactNode` | — | Custom item content renderer |
 | `renderOption` | `(props: { option: T }) => ReactNode` | — | Custom full option row renderer |
 | `renderTopView` | `() => ReactNode` | — | Custom header element above option list |
 | `renderBottomView` | `() => ReactNode` | — | Custom footer element below option list |
 | `renderEmptyView` | `() => ReactNode` | — | Custom view rendered when no items match search filter |
-| `estimatedItemSize` | `number` | `50` | Estimated item height for FlashList virtualization |
+| `estimatedItemSize` | `number` | `200` | Estimated item height for FlashList virtualization |
 | `startYear` | `number` | — | Minimum year limit for date picker |
 | `endYear` | `number` | — | Maximum year limit for date picker |
-| `isEqual` | `(item1: T, item2: T) => boolean` | — | Custom equality comparator for list items |
+| `isEqual` | `(item1: T, item2: T) => boolean` | — | Custom equality comparator for list items (defaults to `item1 === item2`) |
 | `onBeforeClose` | `() => Promise<boolean> \| boolean` | — | Interceptor callback to guard closing; returning `false` cancels close |
 | `onConfirm` | `() => Promise<void> \| void` | — | Callback invoked when confirming selection |
 
